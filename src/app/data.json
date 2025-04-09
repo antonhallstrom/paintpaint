@@ -1,0 +1,245 @@
+// const treatments = [
+//     {
+//       label: '00 = Ingen färdigbehandling',
+//       treatments: []
+//     },
+//     {
+//       label: '01 = Tvättning för gott (tvättning)',
+//       treatments: [
+//         { times: 1, treatment: 'målar-tvätt', materialConsumption: 0.3, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '02 = Uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '03 = Kantlimning, uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'kantlimning', materialConsumption: 0.2, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '04 = Limning, uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'limning', materialConsumption: 0.25, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '05 = 1 gg grundning, uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'grundning', materialConsumption: 0.5, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '06 = 1 gg strykning, uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'grundfärg', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '07 = Grängning',
+//       treatments: [
+//         { times: 1, treatment: 'grängning', materialConsumption: 0.5, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '08 = 1 gg strykning',
+//       treatments: [
+//         { times: 1, treatment: 'grundfärg', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '09 = 1 gg påbättring, 1 gg strykning',
+//       treatments: [
+//         { times: 1, treatment: 'påbättring', materialConsumption: 0.3, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'grundfärg', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '10 = 2 ggr strykning',
+//       treatments: [
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '11 = 1gg påbättring, 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'påbättring', materialConsumption: 0.3, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '12 = 1 gg grundning, 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'grundning', materialConsumption: 0.5, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '13 = 3 ggr strykning',
+//       treatments: [
+//         { times: 3, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '14 = 1 gg strykning, 1 gg ispackling (finspackling), 1 gg påbättring, 1 gg strykning',
+//       treatments: [
+//         { times: 1, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'ispackling', materialConsumption: 0.2, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'påbättring', materialConsumption: 0.3, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '15 = 1 gg strykning, 1 gg ispackling (finspackling), 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'ispackling', materialConsumption: 0.2, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '16 = 1 gg strykning, 1 gg bredspackling (finbredspackling), 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'bredspackling', materialConsumption: 0.3, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '17 = Vattenslipning, 1 gg strykning, 1 gg bredspackling (finbredspackling), 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'vattenslipning', materialConsumption: 0.3, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'bredspackling', materialConsumption: 0.3, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '18 = Vävklistring, 1 gg strykning',
+//       treatments: [
+//         { times: 1, treatment: 'vävklistring', materialConsumption: 0.35, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '19 = Vävklistring, 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'vävklistring', materialConsumption: 0.35, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '20 = Vävklistring, 1 gg grundning, 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'vävklistring', materialConsumption: 0.35, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'grundning', materialConsumption: 0.5, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '21 = Vävklistring, 1 gg bredspackling, 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'vävklistring', materialConsumption: 0.35, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'bredspackling', materialConsumption: 0.3, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '22 = Limning, vävklistring, 1 gg strykning',
+//       treatments: [
+//         { times: 1, treatment: 'limning', materialConsumption: 0.25, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'vävklistring', materialConsumption: 0.35, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '23 = Limning, vävklistring, 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'limning', materialConsumption: 0.25, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'vävklistring', materialConsumption: 0.35, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '24 = Limning, vävklistring, 1 gg grundning, 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'limning', materialConsumption: 0.25, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'vävklistring', materialConsumption: 0.35, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'grundning', materialConsumption: 0.5, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '25 = 1 gg grundning, vävklistring, 2 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'grundning', materialConsumption: 0.5, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'vävklistring', materialConsumption: 0.35, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '26 = 1 gg grundning, vävklistring, 3 ggr strykning',
+//       treatments: [
+//         { times: 1, treatment: 'grundning', materialConsumption: 0.5, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'vävklistring', materialConsumption: 0.35, materialConsumptionUnit: 'kvd' },
+//         { times: 3, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '27-36 = Fri (saknar åtgärd)',
+//       treatments: []
+//     },
+//     {
+//       label: '37 = 1 gg strykning hel yta, 1 gg strykning synlig yta',
+//       treatments: [
+//         { times: 1, treatment: 'strykning hel yta', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'strykning synlig yta', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '38 = 1 gg strykning hel yta, 2 ggr strykning synlig yta',
+//       treatments: [
+//         { times: 1, treatment: 'strykning hel yta', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' },
+//         { times: 2, treatment: 'strykning synlig yta', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '39 = 1 gg strykning synlig yta',
+//       treatments: [
+//         { times: 1, treatment: 'strykning synlig yta', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '40 = 1 gg påbättring, 1 gg strykning synlig yta',
+//       treatments: [
+//         { times: 1, treatment: 'påbättring', materialConsumption: 0.3, materialConsumptionUnit: 'kvd' },
+//         { times: 1, treatment: 'strykning synlig yta', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '41 = 2 ggr strykning synlig yta',
+//       treatments: [
+//         { times: 2, treatment: 'strykning synlig yta', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '42 = 1 gg lasering',
+//       treatments: [
+//         { times: 1, treatment: 'lasering', materialConsumption: 0.5, materialConsumptionUnit: 'kvd' }
+//       ]
+//     },
+//     {
+//       label: '43 = 2 ggr lasering',
+//       treatments: [
+//         { times: 2, treatment: 'lasering', materialConsumption: 0.5, materialConsumptionUnit: 'kvd' }
+//       ]
+//     }
+//   ];
+  
