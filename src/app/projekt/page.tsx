@@ -71,6 +71,7 @@ const MaterialList = ({ surfaces }) => {
 };
 
 export default function ProjectForm() {
+  const [filterStatus, setFilterStatus] = useState("all");
   const [surfaces, setSurfaces] = useState();
   const [projects, setProjects] = useState([
     {
@@ -206,6 +207,11 @@ export default function ProjectForm() {
     };
   };
 
+  const filteredProjects = projects.filter((project) => {
+    if (filterStatus === "all") return true; // Visa alla projekt
+    return project.status === filterStatus; // Filtrera baserat på status
+  });
+
   return (
     <div className="p-4 space-y-4">
       <Link href="/" className="w-full">
@@ -214,7 +220,21 @@ export default function ProjectForm() {
           Hem
         </Button>
       </Link>
-      {projects.map((project, projectIndex) => (
+      <Select
+        value={filterStatus}
+        onValueChange={(value) => setFilterStatus(value)}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Filtrera på status" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Alla</SelectItem>
+          <SelectItem value="pågående">Pågående</SelectItem>
+          <SelectItem value="avslutad">Avslutad</SelectItem>
+          <SelectItem value="avslutad">Pausad</SelectItem>
+        </SelectContent>
+      </Select>
+      {filteredProjects.map((project, projectIndex) => (
         <Card key={projectIndex}>
           <CardContent className="p-4">
             <Accordion type="multiple" className="w-full">
