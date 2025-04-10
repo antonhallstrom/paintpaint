@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
+import Link from "next/link";
+import { Home } from "lucide-react";
 // AMA-kodsystemet för look-up
 const amaCodes = {
   underlag: {
@@ -285,8 +286,13 @@ const AMAApp = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>AMA-kodtolkare</h1>
-
+      <h1 className="mb-4">AMA-kodtolkare</h1>
+      <Link href="/" className="w-full">
+        <Button variant="outline">
+          <Home className="w-6 h-6" />
+          Hem
+        </Button>
+      </Link>
       <p>
         En AMA-kods uppbyggnad. Målningsbehandlingar (AMA-koder) är
         sammanställda genom en kombination av siffergrupper för:
@@ -338,63 +344,80 @@ const AMAApp = () => {
         </li>
       </ul>
 
-      <div style={{ display: "flex", gap: "10px" }}>
-        <div>
-          <label>Underlag:</label>
+      <div className="flex flex-wrap gap-4 p-4">
+        <div className="w-full sm:w-auto">
+          <label className="block text-sm font-bold text-gray-700">
+            Underlag:
+          </label>
           <Input
             type="number"
             value={underlag}
             placeholder="1-9, 91-99"
             onChange={(e) => setUnderlag(e.target.value)}
+            className="mt-1 block w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
 
-        <div>
-          <label>Slutbehandling:</label>
+        <div className="w-full sm:w-auto">
+          <label className="block text-sm font-bold text-gray-700">
+            Slutbehandling:
+          </label>
           <Input
             type="number"
             placeholder="1-9"
             value={slutbehandling}
             onChange={(e) => setSlutbehandling(e.target.value)}
+            className="mt-1 block w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
 
-        <div>
-          <label>Rengöringgrad - Förbehandling:</label>
+        <div className="w-full sm:w-auto">
+          <label className="block text-sm font-bold text-gray-700">
+            Rengöringgrad - Förbehandling:
+          </label>
           <Input
             placeholder="1-9"
             type="number"
             value={forbehandling}
             onChange={(e) => setForbehandling(e.target.value)}
+            className="mt-1 block w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
 
-        <div>
-          <label>Underbehandling:</label>
+        <div className="w-full sm:w-auto">
+          <label className="block text-sm font-bold text-gray-700">
+            Underbehandling:
+          </label>
           <Input
             placeholder="00-99"
             type="number"
             value={underbehandling}
             onChange={(e) => setUnderbehandling(e.target.value)}
+            className="mt-1 block w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
 
-        <div>
-          <label>Färdigbehandling:</label>
+        <div className="w-full sm:w-auto">
+          <label className="block text-sm font-bold text-gray-700">
+            Färdigbehandling:
+          </label>
           <Input
             type="number"
             placeholder="00-99"
             value={fardigbehandling}
             onChange={(e) => setFardigbehandling(e.target.value)}
+            className="mt-1 block w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
       </div>
 
       <Button onClick={handleSubmit}>Sök</Button>
 
-      <div>
-        <h3>Resultat:</h3>
-        <pre>{resultat}</pre>
+      <div className="over p-4 bg-gray-100 rounded-lg shadow-md max-w-full overflow-hidden">
+        <h3 className="mb-4 text-xl text-gray-800">Resultat:</h3>
+        <pre className="whitespace-pre-line break-words  p-4 rounded-lg text-sm font-mono overflow-x-auto">
+          {resultat}
+        </pre>
       </div>
 
       <div className="overflow-x-auto mt-8">
