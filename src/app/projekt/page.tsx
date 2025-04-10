@@ -248,16 +248,17 @@ export default function ProjectForm() {
                   </div>
 
                   {/* Ytor */}
-                  <div className="mt-4 space-y-2">
+                  <div className="m-4 space-y-2">
+                    <h5>Ytor</h5>
                     {project.surfaces.map((surface, surfaceIndex) => (
                       <Accordion
                         key={surfaceIndex}
                         type="multiple"
-                        className="w-full"
+                        className="w-full outline-2 px-2"
                       >
                         <AccordionItem value={`yta-${surfaceIndex}`}>
                           <AccordionTrigger>
-                            Yta {surfaceIndex + 1}
+                            {surface.title || `Yta ${surfaceIndex + 1}`}
                           </AccordionTrigger>
                           <AccordionContent>
                             <div className="space-y-4">
@@ -355,18 +356,21 @@ export default function ProjectForm() {
                               </Select>
 
                               {/* Behandlingar */}
-                              <div className="space-y-2">
+                              <div className="m-4 space-y-2">
+                                <h5>Behandlingar</h5>
                                 {surface.treatments.map(
                                   (treatment, treatmentIndex) => (
                                     <Accordion
                                       key={treatmentIndex}
                                       type="multiple"
+                                      className="w-full outline-2 px-2"
                                     >
                                       <AccordionItem
                                         value={`behandling-${treatmentIndex}`}
                                       >
                                         <AccordionTrigger>
-                                          Behandling {treatmentIndex + 1}
+                                          {treatment.title ||
+                                            `Behandling ${treatmentIndex + 1}`}
                                         </AccordionTrigger>
                                         <AccordionContent>
                                           <Input
@@ -936,3 +940,93 @@ export default function ProjectForm() {
 // };
 
 // export default App;
+
+// const treatments = [
+//     {
+//       label: '00 = Ingen färdigbehandling',
+//       treatments: []
+//     },
+//     {
+//       label: '01 = Tvättning för gott (tvättning)',
+//       treatments: [
+//         { times: 1, treatment: 'målar-tvätt', materialConsumption: 0.3, materialConsumptionUnit: 'kvd', material: 'målartvätt' }
+//       ]
+//     },
+//     {
+//       label: '02 = Uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd', material: 'tapetlim' }
+//       ]
+//     },
+//     {
+//       label: '03 = Kantlimning, uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'kantlimning', materialConsumption: 0.2, materialConsumptionUnit: 'kvd',  material: 'tapetlim' },
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd', material: 'tapetlim' }
+//       ]
+//     },
+//     {
+//       label: '04 = Limning, uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'limning', materialConsumption: 0.25, materialConsumptionUnit: 'kvd', material: 'tapetlim' },
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd', material: 'tapetlim' }
+//       ]
+//     },
+//     {
+//       label: '05 = 1 gg grundning, uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'grundning', materialConsumption: 0.5, materialConsumptionUnit: 'kvd', material: 'tapetlim' },
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd', material: 'tapetlim' }
+//       ]
+//     },
+//     {
+//       label: '06 = 1 gg strykning, uppsättning tapet',
+//       treatments: [
+//         { times: 1, treatment: 'grundfärg', materialConsumption: 0.4, materialConsumptionUnit: 'kvd', material: 'grundfärg' },
+//         { times: 1, treatment: 'tapetklister', materialConsumption: 0.38, materialConsumptionUnit: 'kvd', material: 'tapetlim' }
+//       ]
+//     },
+//     {
+//       label: '07 = Grängning',
+//       treatments: [
+//         { times: 1, treatment: 'grängning', materialConsumption: 0.5, materialConsumptionUnit: 'kvd', material: 'gräng' }
+//       ]
+//     },
+//     {
+//       label: '08 = 1 gg strykning',
+//       treatments: [
+//         { times: 1, treatment: 'grundfärg', materialConsumption: 0.4, materialConsumptionUnit: 'kvd', material: 'grundfärg' }
+//       ]
+//     },
+//     {
+//       label: '09 = 1 gg påbättring, 1 gg strykning',
+//       treatments: [
+//         { times: 1, treatment: 'påbättring', materialConsumption: 0.3, materialConsumptionUnit: 'kvd', material: 'grundfärg' },
+//         { times: 1, treatment: 'grundfärg', materialConsumption: 0.4, materialConsumptionUnit: 'kvd', material: 'grundfärg' }
+//       ]
+//     },
+//     {
+//         label: '14 = 1 gg strykning, 1 gg ispackling (finspackling), 1 gg påbättring, 1 gg strykning',
+//         treatments: [
+//           { times: 1, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd', material: 'färg' },
+//           { times: 1, treatment: 'ispackling', materialConsumption: 0.2, materialConsumptionUnit: 'kvd', material: 'spackel' },
+//           { times: 1, treatment: 'påbättring', materialConsumption: 0.3, materialConsumptionUnit: 'kvd', material: 'spackel' }
+//         ]
+//       },
+//       {
+//         label: '15 = 1 gg strykning, 1 gg ispackling (finspackling), 2 ggr strykning',
+//         treatments: [
+//           { times: 1, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' },
+//           { times: 1, treatment: 'ispackling', materialConsumption: 0.2, materialConsumptionUnit: 'kvd' },
+//           { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd' }
+//         ]
+//       },
+//       {
+//         label: '16 = 1 gg strykning, 1 gg bredspackling (finbredspackling), 2 ggr strykning',
+//         treatments: [
+//           { times: 1, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd', material: 'grundfärg' },
+//           { times: 1, treatment: 'bredspackling', materialConsumption: 1, materialConsumptionUnit: 'kvd', material: 'spackel' },
+//           { times: 2, treatment: 'strykning', materialConsumption: 0.4, materialConsumptionUnit: 'kvd', material: 'färg' }
+//         ]
+//       },
+//       ]
