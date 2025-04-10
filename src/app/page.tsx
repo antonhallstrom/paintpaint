@@ -54,7 +54,7 @@ export default function HomePage() {
           </Button>
         </Link>
 
-        <Link href="/reseersattning" className="w-full">
+        {/* <Link href="/reseersattning" className="w-full">
           <Button
             variant="outline"
             className="w-full flex items-center justify-center p-6 gap-4 text-lg rounded-2xl shadow hover:shadow-lg transition"
@@ -92,7 +92,7 @@ export default function HomePage() {
             <BookOpen className="w-6 h-6" />
             Fakta
           </Button>
-        </Link>
+        </Link> */}
       </div>
     </main>
   );

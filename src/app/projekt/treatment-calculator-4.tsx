@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+
 import {
   Select,
   SelectTrigger,
@@ -77,7 +79,8 @@ const materialUnits = {
   gräng: "liter",
 };
 
-export default function TreatmentCalculator() {
+export default function TreatmentCalculator({ projectId, surfaceId }) {
+  console.log(`${projectId}-${surfaceId}`);
   const [selectedLabel, setSelectedLabel] = useState("");
   const [area, setArea] = useState(0);
   const [height, setHeight] = useState(2.5); // Standard takhöjd
@@ -85,16 +88,74 @@ export default function TreatmentCalculator() {
   const [rollLength, setRollLength] = useState(10.05); // Default längd på tapetrulle (m)
   const [patternMatching, setPatternMatching] = useState(0); // Spill för mönsterpassning (m)
   const [selectedTreatments, setSelectedTreatments] = useState([]);
-  const [treatmentHours, setTreatmentHours] = useState({}); // För att lagra arbetstimmar per behandling
-  const [completedTreatments, setCompletedTreatments] = useState({}); // För att hålla koll på om behandlingarna är klar
-  const [dryingTimes, setDryingTimes] = useState({}); // För att lagra torktider per behandling
-  const [dryingCompletionTimes, setDryingCompletionTimes] = useState({}); // För att hålla koll på när torktiden är klar
+  const [treatmentHours, setTreatmentHours] = useState({});
+  const [completedTreatments, setCompletedTreatments] = useState({});
+  const [dryingTimes, setDryingTimes] = useState({});
+
+  // Ladda data från localStorage när komponenten laddas
+  useEffect(() => {
+    const savedData = localStorage.getItem("surfaces");
+    console.log("svaedData", savedData);
+    if (savedData) {
+      const surfaces = JSON.parse(savedData);
+      const surfaceData = surfaces[`${projectId}-${surfaceId}`];
+      if (surfaceData) {
+        console.log("called");
+        setArea(surfaceData.area || 0);
+        setHeight(surfaceData.height || 2.5);
+        setRollWidth(surfaceData.rollWidth || 0.53);
+        setRollLength(surfaceData.rollLength || 10.05);
+        setPatternMatching(surfaceData.patternMatching || 0);
+        setSelectedTreatments(surfaceData.selectedTreatments || []);
+        setTreatmentHours(surfaceData.treatmentHours || {});
+        setCompletedTreatments(surfaceData.completedTreatments || {});
+        setDryingTimes(surfaceData.dryingTimes || {});
+      }
+    }
+  }, [projectId, surfaceId]);
+
+  useEffect(() => {
+    const dataToSave = {
+      area,
+      height,
+      rollWidth,
+      rollLength,
+      patternMatching,
+      selectedTreatments,
+      treatmentHours,
+      completedTreatments,
+      dryingTimes,
+    };
+
+    const savedSurfaces = localStorage.getItem("surfaces");
+    const surfaces = savedSurfaces ? JSON.parse(savedSurfaces) : {};
+
+    // Spara uppdaterad data för specifik yta under projectId-surfaceId
+    surfaces[`${projectId}-${surfaceId}`] = dataToSave;
+
+    // Spara tillbaka hela surfaces-objektet till localStorage
+    setTimeout(() => {
+      localStorage.setItem("surfaces", JSON.stringify(surfaces));
+    }, 100); // Lägger till en liten fördröjning
+  }, [
+    projectId,
+    surfaceId,
+    area,
+    height,
+    rollWidth,
+    rollLength,
+    patternMatching,
+    selectedTreatments,
+    treatmentHours,
+    completedTreatments,
+    dryingTimes,
+  ]);
 
   const handleAddTreatment = () => {
     const treatment = treatments.find((t) => t.label === selectedLabel);
     if (treatment) {
-      const uniqueId = new Date().getTime(); // Unikt ID baserat på nuvarande tid
-      const newTreatment = { ...treatment, id: uniqueId }; // Lägg till ID
+      const uniqueId = new Date().getTime();
+      const newTreatment = { ...treatment, id: uniqueId };
       setSelectedTreatments([...selectedTreatments, newTreatment]);
     }
   };
@@ -163,7 +224,7 @@ export default function TreatmentCalculator() {
   }, {});
 
   return (
-    <div className="p-4 max-w-xl mx-auto space-y-4">
+    <div className="space-y-4">
       <Card>
         <CardContent className="space-y-4 pt-6">
           <div>
@@ -234,22 +295,32 @@ export default function TreatmentCalculator() {
       <Card>
         <CardContent className="pt-6">
           <h2 className="font-bold mb-2">Valda behandlingar</h2>
-          <ul className="list-disc pl-4">
+          <ol className="list-decimal pl-4">
             {selectedTreatments.map((t, i) => (
               <li
                 key={t.id}
+                className="my-2"
                 style={{
                   textDecoration: completedTreatments[t.id] ? "none" : "none",
                 }}
               >
-                <label>
-                  <input
-                    type="checkbox"
+                <div className="flex items-center space-x-2 mb-2">
+                  <Checkbox
+                    id={`checkbox-${t.id}`}
                     checked={completedTreatments[t.id]}
-                    onChange={() => handleCompleteTreatment(t.id)}
+                    onCheckedChange={() => handleCompleteTreatment(t.id)}
                   />
-                  {t.label}
-                </label>
+                  <label
+                    htmlFor={`checkbox-${t.id}`}
+                    className={`text-sm font-medium leading-none ${
+                      completedTreatments[t.id]
+                        ? "line-through text-muted-foreground"
+                        : ""
+                    }`}
+                  >
+                    {t.label}
+                  </label>
+                </div>
 
                 <div>
                   <Label>Torktid (i timmar)</Label>
@@ -281,17 +352,9 @@ export default function TreatmentCalculator() {
                     }
                   />
                 </div>
-
-                <div>
-                  <h3>Verktyg som behövs:</h3>
-                  <ul>
-                    {t.tools &&
-                      t.tools.map((tool, idx) => <li key={idx}>{tool}</li>)}
-                  </ul>
-                </div>
               </li>
             ))}
-          </ul>
+          </ol>
         </CardContent>
       </Card>
 
