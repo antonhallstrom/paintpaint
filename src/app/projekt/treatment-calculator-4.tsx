@@ -24,7 +24,7 @@ const treatments = [
       {
         times: 1,
         treatment: "tapetklister",
-        materialConsumption: 0.38,
+        materialConsumption: 0.197, // flugger
         materialConsumptionUnit: "kvd",
         material: "tapetlim",
       },
@@ -36,16 +36,16 @@ const treatments = [
     label: "03 = Kantlimning, uppsättning tapet",
     treatments: [
       {
-        times: 1,
+        times: 0,
         treatment: "kantlimning",
-        materialConsumption: 0.2,
+        materialConsumption: 0.197, // flugger
         materialConsumptionUnit: "kvd",
         material: "tapetlim",
       },
       {
         times: 1,
         treatment: "tapetklister",
-        materialConsumption: 0.38,
+        materialConsumption: 0.197, // flugger
         materialConsumptionUnit: "kvd",
         material: "tapetlim",
       },
@@ -58,10 +58,24 @@ const treatments = [
     treatments: [
       {
         times: 1,
-        treatment: "spackel",
-        materialConsumption: 0.3,
+        treatment: "spackel", // flugger
+        materialConsumption: 1,
         materialConsumptionUnit: "kvd",
         material: "spackel",
+      },
+    ],
+    dryingTime: 3, // Default torktid för spackling
+    tools: ["spackelspadar"], // Verktyg för spackling
+  },
+  {
+    label: "08 = strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "strykning", // flugger
+        materialConsumption: 0.125,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
       },
     ],
     dryingTime: 3, // Default torktid för spackling
@@ -377,8 +391,8 @@ export default function TreatmentCalculator({ projectId, surfaceId }) {
           <ul className="list-disc pl-4">
             {Object.entries(materialSummary).map(([material, total], i) => (
               <li key={i}>
-                {material}: {total.toFixed(2)}{" "}
-                {materialUnits[material] || "kvd"}
+                {material}: {total.toFixed(2)}
+                {" l"}
               </li>
             ))}
           </ul>

@@ -22,7 +22,56 @@ import {
 import Link from "next/link";
 import TreatmentCalculator from "./treatment-calculator-4";
 
+const MaterialList = ({ surfaces }) => {
+  // Helper function to convert material consumption to liters
+  const convertToLiters = (kvd, conversionFactor) => {
+    return kvd / conversionFactor;
+  };
+
+  const getMaterialConsumption = (surfaces) => {
+    const materialSummary = {};
+
+    // Iterera genom alla ytor
+    Object.keys(surfaces).forEach((surfaceKey) => {
+      const surface = surfaces[surfaceKey];
+
+      // Säkerställ att selectedTreatments finns och är en array innan vi fortsätter
+      if (Array.isArray(surface.selectedTreatments)) {
+        surface.selectedTreatments.forEach((selectedTreatment) => {
+          // Iterera genom alla behandlingar för den valda behandlingen
+          selectedTreatment.treatments.forEach((step) => {
+            // Beräkna total materialförbrukning
+            const amount =
+              (step.materialConsumption ?? 0) * step.times * surface.area;
+            const material = step.material || step.treatment;
+
+            // Lägg till eller uppdatera materialförbrukningen i materialSummary
+            materialSummary[material] =
+              (materialSummary[material] || 0) + amount;
+          });
+        });
+      }
+    });
+
+    return materialSummary;
+  };
+
+  const materialSummary = getMaterialConsumption(surfaces);
+  console.log(materialSummary);
+  return (
+    <ul className="list-disc pl-4">
+      {Object.entries(materialSummary).map(([material, total], i) => (
+        <li key={i}>
+          {material}: {total.toFixed(2)}
+          {" l"}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 export default function ProjectForm() {
+  const [surfaces, setSurfaces] = useState();
   const [projects, setProjects] = useState([
     {
       title: "",
@@ -34,9 +83,28 @@ export default function ProjectForm() {
       contact: "",
       phone: "",
       surfaces: [],
+      id: crypto.randomUUID(),
     },
   ]);
-  // Ladda projekt från localStorage när komponenten mountas
+
+  useEffect(() => {
+    const stored = localStorage.getItem("surfaces");
+    if (stored) {
+      try {
+        const parsedSurfaces = JSON.parse(stored);
+        // Kontrollera att parsedSurfaces är ett objekt innan vi försöker använda det
+        if (parsedSurfaces && typeof parsedSurfaces === "object") {
+          setSurfaces(parsedSurfaces);
+        } else {
+          console.error("Surfaces data är inte i rätt format.");
+        }
+      } catch (err) {
+        console.error("Kunde inte parsa localStorage-data:", err);
+      }
+    }
+  }, []);
+
+  // Hämta projekt från localStorage
   useEffect(() => {
     const stored = localStorage.getItem("projects");
     if (stored) {
@@ -45,22 +113,6 @@ export default function ProjectForm() {
       } catch (err) {
         console.error("Kunde inte parsa localStorage-data:", err);
       }
-    } else {
-      // Initiera med ett tomt projekt
-      setProjects([
-        {
-          id: crypto.randomUUID(),
-          title: "",
-          status: "",
-          startDate: "",
-          endDate: "",
-          address: "",
-          notes: "",
-          contact: "",
-          phone: "",
-          surfaces: [],
-        },
-      ]);
     }
   }, []);
 
@@ -86,7 +138,7 @@ export default function ProjectForm() {
     setProjects([
       ...projects,
       {
-        id: crypto.randomUUID(), // 👈 Lägg till unikt id
+        id: crypto.randomUUID(),
         title: "",
         status: "",
         startDate: "",
@@ -100,10 +152,58 @@ export default function ProjectForm() {
     ]);
   };
 
-  const updateTreatments = (projectIndex, surfaceIndex, newTreatments) => {
-    const updated = [...projects];
-    updated[projectIndex].surfaces[surfaceIndex].treatments = newTreatments;
-    setProjects(updated);
+  const getTotalTimeAndMaterials = (surfaces) => {
+    if (!surfaces || typeof surfaces !== "object") {
+      console.error("Datan är inte i rätt format eller saknas.");
+      return { totalTime: 0, tools: [], materials: [] };
+    }
+
+    let totalTime = 0;
+    let tools = new Set();
+    let materials = new Set();
+
+    // Iterera genom alla ytor i surfaces (som är objekt med unika nycklar)
+    Object.keys(surfaces).forEach((surfaceKey) => {
+      const surface = surfaces[surfaceKey];
+      console.log("S", surface);
+      // Säkerställ att selectedTreatments finns och är en array innan vi fortsätter
+      if (Array.isArray(surface.selectedTreatments)) {
+        if (surface.treatmentHours && surface.treatmentHours) {
+          totalTime += Object.values(surface.treatmentHours).reduce(
+            (acc, curr) => acc + curr,
+            0
+          );
+        }
+        surface.selectedTreatments.forEach((selectedTreatment) => {
+          console.log("ST", selectedTreatment);
+          if (selectedTreatment.tools) {
+            selectedTreatment.tools.forEach((tool) => tools.add(tool));
+          }
+
+          // Summera arbetstiden från `treatmentHours`-objektet
+          // Säkerställ att treatments finns och är en array
+          if (Array.isArray(selectedTreatment.treatments)) {
+            selectedTreatment.treatments.forEach((treatment) => {
+              console.log("T", treatment);
+              // Lägg till verktyg från behandlingen
+              if (treatment.tools) {
+                treatment.tools.forEach((tool) => tools.add(tool));
+              }
+
+              // Lägg till material från behandlingen
+              if (treatment.material) {
+                materials.add(treatment.material);
+              }
+            });
+          }
+        });
+      }
+    });
+    return {
+      totalTime,
+      tools: Array.from(tools),
+      materials: Array.from(materials),
+    };
   };
 
   return (
@@ -310,7 +410,36 @@ export default function ProjectForm() {
                     >
                       Lägg till yta
                     </Button>
-                    <div>Verktyg --- Material --- Arbetsplatformar</div>
+
+                    {/* Verktyg, Material, Total arbetstid */}
+                    <div>
+                      {surfaces && (
+                        <div>
+                          <div>
+                            <strong>Verktyg:</strong>
+                            <ul className="list-disc pl-4">
+                              {getTotalTimeAndMaterials(surfaces).tools.map(
+                                (tool, index) => (
+                                  <li key={index}>{tool}</li>
+                                )
+                              )}
+                            </ul>
+                          </div>
+                          <p>
+                            <strong>Material:</strong>{" "}
+                            <MaterialList surfaces={surfaces} />
+                          </p>
+                          <p>
+                            <strong>Total arbetstid:</strong>
+                            {
+                              getTotalTimeAndMaterials(surfaces as any)
+                                .totalTime
+                            }{" "}
+                            timmar
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </AccordionContent>
               </AccordionItem>
