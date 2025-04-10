@@ -159,7 +159,9 @@ export default function ProjectForm() {
           <CardContent className="p-4">
             <Accordion type="multiple" className="w-full">
               <AccordionItem value={`project-${projectIndex}`}>
-                <AccordionTrigger>Projekt</AccordionTrigger>
+                <AccordionTrigger>
+                  {project.title || `Project ${projectIndex}`}
+                </AccordionTrigger>
                 <AccordionContent>
                   <div className="grid grid-cols-2 gap-4">
                     <Input
