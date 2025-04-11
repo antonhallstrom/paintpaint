@@ -13,7 +13,6 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-
 const preTreatments = [
   {
     code: "0",
@@ -1481,9 +1480,18 @@ const TreatmentCalculator = () => {
   const [selectedFinishTreatment, setSelectedFinishTreatment] = useState("");
   const [area, setArea] = useState(0);
   const [averageHours, setAverageHours] = useState(0);
+  const [surfaces, setSurfaces] = useState<unknown>({});
 
   // Hämta data från localStorage
-  const surfaces = JSON.parse(localStorage.getItem("surfaces")) || {};
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // This check ensures the code runs only in the browser (client-side)
+      const storedSurfaces = JSON.parse(
+        localStorage.getItem("surfaces") || "{}"
+      );
+      setSurfaces(storedSurfaces);
+    }
+  }, []);
 
   useEffect(() => {
     if (
