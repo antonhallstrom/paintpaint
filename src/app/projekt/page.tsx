@@ -65,7 +65,7 @@ const MaterialList = ({ surfaces }) => {
     <ul className="list-disc pl-4">
       {Object.entries(materialSummary).map(([material, total], i) => (
         <li key={i}>
-          {material}: {total.toFixed(2)}
+          {material}: {(total as any).toFixed(2)}
           {" l"}
         </li>
       ))}
@@ -400,7 +400,6 @@ export default function ProjectForm() {
                                 <div>
                                   <label htmlFor="base">Underlag</label>
                                   <Select
-                                    id="base"
                                     value={surface.base}
                                     onValueChange={(value) => {
                                       const updated = [...projects];
@@ -490,7 +489,6 @@ export default function ProjectForm() {
                                 <div>
                                   <label htmlFor="finish">Slutbehandling</label>
                                   <Select
-                                    id="finish"
                                     value={surface.finish}
                                     onValueChange={(value) => {
                                       const updated = [...projects];
