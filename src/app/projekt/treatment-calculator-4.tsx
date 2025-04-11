@@ -13,89 +13,1055 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const treatments = [
+const preTreatments = [
+  {
+    label: "0 = Ingen förbehandling",
+    treatments: [],
+    dryingTime: 0, // Ingen torktid behövs
+    tools: [], // Inga verktyg behövs
+  },
+  {
+    label:
+      "1 = Rengöringsgrad 1 (Nertagning / Nerskrapning av tidigare ytmaterial)",
+    treatments: [
+      {
+        times: 1,
+        treatment: "spackel",
+        materialConsumption: 0.25, // Materialåtgång per kvadratmeter
+        materialConsumptionUnit: "kvd",
+        material: "spackel",
+      },
+    ],
+    dryingTime: 4, // Torktid i timmar för spackel
+    tools: ["spackelspade", "skrapa", "handskar"], // Verktyg för nerskrapning
+  },
+  {
+    label: "2 = Rengöringsgrad 2 (Tvättning, Uppskrapning)",
+    treatments: [
+      {
+        times: 1,
+        treatment: "tvättmedel",
+        materialConsumption: 0.15, // Materialåtgång per kvadratmeter
+        materialConsumptionUnit: "kvd",
+        material: "tvättmedel",
+      },
+      {
+        times: 1,
+        treatment: "spackel",
+        materialConsumption: 0.2, // Materialåtgång per kvadratmeter
+        materialConsumptionUnit: "kvd",
+        material: "spackel",
+      },
+    ],
+    dryingTime: 6, // Torktid i timmar för spackel
+    tools: ["tvättsvamp", "handskar", "spackelspade", "skrapa"], // Verktyg för tvättning och uppskrapning
+  },
+  {
+    label: "3 = Rengöringsgrad 3 (Tvättning)",
+    treatments: [
+      {
+        times: 1,
+        treatment: "tvättmedel",
+        materialConsumption: 0.1, // Materialåtgång per kvadratmeter
+        materialConsumptionUnit: "kvd",
+        material: "tvättmedel",
+      },
+    ],
+    dryingTime: 4, // Torktid i timmar för tvättmedel
+    tools: ["tvättsvamp", "handskar"], // Verktyg för tvättning
+  },
+  {
+    label: "4 = Fri",
+    treatments: [],
+    dryingTime: 0, // Ingen torktid behövs
+    tools: [], // Inga verktyg behövs
+  },
+  {
+    label: "5 = Fri",
+    treatments: [],
+    dryingTime: 0, // Ingen torktid behövs
+    tools: [], // Inga verktyg behövs
+  },
+  {
+    label: "6 = Fri",
+    treatments: [],
+    dryingTime: 0, // Ingen torktid behövs
+    tools: [], // Inga verktyg behövs
+  },
+  {
+    label: "7 = Fri",
+    treatments: [],
+    dryingTime: 0, // Ingen torktid behövs
+    tools: [], // Inga verktyg behövs
+  },
+  {
+    label: "8 = Fri",
+    treatments: [],
+    dryingTime: 0, // Ingen torktid behövs
+    tools: [], // Inga verktyg behövs
+  },
+  {
+    label: "9 = Fri",
+    treatments: [],
+    dryingTime: 0, // Ingen torktid behövs
+    tools: [], // Inga verktyg behövs
+  },
+];
+
+const underTreatments = [
+  {
+    label: "00 = Ingen underbehandling",
+    treatments: [],
+    dryingTime: 0,
+    tools: [],
+  },
+  {
+    label: "01 = Kridering",
+    treatments: [
+      {
+        times: 1,
+        treatment: "krideringslimfärg",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "krideringslimfärg",
+      },
+    ],
+    dryingTime: 8,
+    tools: ["pensel", "roller"],
+  },
+  {
+    label: "02 = Inklistring, makulering/vävspänning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "makulering",
+        materialConsumption: 0.15,
+        materialConsumptionUnit: "kvd",
+        material: "makulering",
+      },
+    ],
+    dryingTime: 6,
+    tools: ["pensel", "väv", "spännverktyg"],
+  },
+  {
+    label: "03 = Kittning eller gipslagning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "gips",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "gips",
+      },
+    ],
+    dryingTime: 12,
+    tools: ["spackelspade", "gips"],
+  },
+  {
+    label: "04 = 1 gg ispackling (småhål)",
+    treatments: [
+      {
+        times: 1,
+        treatment: "ispackel",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "ispackel",
+      },
+    ],
+    dryingTime: 4,
+    tools: ["spackelspade", "handskar"],
+  },
+  {
+    label: "05 = i- och påspackling (småhål)",
+    treatments: [
+      {
+        times: 1,
+        treatment: "påspackel",
+        materialConsumption: 0.15,
+        materialConsumptionUnit: "kvd",
+        material: "påspackel",
+      },
+    ],
+    dryingTime: 5,
+    tools: ["spackelspade", "handskar"],
+  },
+  {
+    label: "06 = 1 gg skarvspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+    ],
+    dryingTime: 6,
+    tools: ["spackelspade", "handskar"],
+  },
+  {
+    label: "07 = i- och skarvspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+      {
+        times: 1,
+        treatment: "påspackel",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "påspackel",
+      },
+    ],
+    dryingTime: 8,
+    tools: ["spackelspade", "handskar"],
+  },
+  {
+    label: "08 = i- och påspackling, 2 ggr skarvspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+      {
+        times: 2,
+        treatment: "påspackel",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "påspackel",
+      },
+    ],
+    dryingTime: 10,
+    tools: ["spackelspade", "handskar"],
+  },
+  {
+    label: "09 = 2 ggr skarvspackling",
+    treatments: [
+      {
+        times: 2,
+        treatment: "skarvspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+    ],
+    dryingTime: 12,
+    tools: ["spackelspade", "handskar"],
+  },
+  {
+    label: "10 = 1 gg bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "bredspackel",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 8,
+    tools: ["spackelspade", "spackelrulle"],
+  },
+  {
+    label: "11 = 1 gg ispackling, 1 gg bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "ispackel",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "ispackel",
+      },
+      {
+        times: 1,
+        treatment: "bredspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 12,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "12 = 1 gg skarvspackling, 1 gg bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+      {
+        times: 1,
+        treatment: "bredspackel",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 12,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "13 = i- och skarvspackling, 1 gg bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+      {
+        times: 1,
+        treatment: "påspackel",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "påspackel",
+      },
+      {
+        times: 1,
+        treatment: "bredspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 14,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "14 = Fri",
+    treatments: [],
+    dryingTime: 0,
+    tools: [],
+  },
+  {
+    label: "15 = 2 ggr bredspackling",
+    treatments: [
+      {
+        times: 2,
+        treatment: "bredspackel",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 16,
+    tools: ["spackelspade", "spackelrulle"],
+  },
+  {
+    label: "16 = 1 gg ispackling, 2 ggr bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "ispackel",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "ispackel",
+      },
+      {
+        times: 2,
+        treatment: "bredspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 18,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "17 = 1 gg skarvspackling, 2 ggr bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+      {
+        times: 2,
+        treatment: "bredspackel",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 18,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "18 = i- och skarvspackling, 2 ggr bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+      {
+        times: 1,
+        treatment: "påspackel",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "påspackel",
+      },
+      {
+        times: 2,
+        treatment: "bredspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 20,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "19 = i- och påspackling, 2 ggr skarvspackling, 1 gg bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+      {
+        times: 2,
+        treatment: "påspackel",
+        materialConsumption: 0.15,
+        materialConsumptionUnit: "kvd",
+        material: "påspackel",
+      },
+      {
+        times: 1,
+        treatment: "bredspackel",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 22,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "20 = 3 ggr bredspackling",
+    treatments: [
+      {
+        times: 3,
+        treatment: "bredspackel",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 24,
+    tools: ["spackelspade", "spackelrulle"],
+  },
+  {
+    label: "21 = 1 gg ispackling, 3 ggr bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "ispackel",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "ispackel",
+      },
+      {
+        times: 3,
+        treatment: "bredspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 26,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "22 = 1 gg skarvspackling, 3 ggr bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+      {
+        times: 3,
+        treatment: "bredspackel",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 28,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "23 = i- och skarvspackling, 3 ggr bredspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+      {
+        times: 1,
+        treatment: "påspackel",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "påspackel",
+      },
+      {
+        times: 3,
+        treatment: "bredspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "bredspackel",
+      },
+    ],
+    dryingTime: 30,
+    tools: ["spackelspade", "spackelrulle", "handskar"],
+  },
+  {
+    label: "24 = Spackling spik- och/eller skruvhål",
+    treatments: [
+      {
+        times: 1,
+        treatment: "spackel",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "spackel",
+      },
+    ],
+    dryingTime: 4,
+    tools: ["spackelspade"],
+  },
+  {
+    label: "25 = 2 ggr spackling spik- och skruvhål",
+    treatments: [
+      {
+        times: 2,
+        treatment: "spackel",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "spackel",
+      },
+    ],
+    dryingTime: 8,
+    tools: ["spackelspade"],
+  },
+  {
+    label: "26 = Spackling spik- och/eller skruvhål, 1 gg skarvspackling",
+    treatments: [
+      {
+        times: 1,
+        treatment: "spackel",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "spackel",
+      },
+      {
+        times: 1,
+        treatment: "skarvspackel",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "skarvspackel",
+      },
+    ],
+    dryingTime: 8,
+    tools: ["spackelspade", "handskar"],
+  },
+];
+
+const finishTreatments = [
   {
     label: "00 = Ingen färdigbehandling",
     treatments: [],
+    dryingTime: 0,
+    tools: [],
+  },
+  {
+    label: "01 = Tvättning för gott",
+    treatments: [
+      {
+        times: 1,
+        treatment: "tvättning",
+        materialConsumption: 0.05,
+        materialConsumptionUnit: "kvd",
+        material: "tvättmedel",
+      },
+    ],
+    dryingTime: 2,
+    tools: ["tvättborste", "vattenslang"],
   },
   {
     label: "02 = Uppsättning tapet",
     treatments: [
       {
         times: 1,
-        treatment: "tapetklister",
-        materialConsumption: 0.197, // flugger
-        materialConsumptionUnit: "kvd",
-        material: "tapetlim",
+        treatment: "tapetuppsättning",
+        materialConsumption: 1.0,
+        materialConsumptionUnit: "rulle",
+        material: "tapet",
       },
     ],
-    dryingTime: 4, // Default torktid i timmar
-    tools: ["tapetverktyg", "stege"], // Verktyg för tapetsering
+    dryingTime: 12,
+    tools: ["tapetbord", "tapetklister", "tapetborste"],
   },
   {
     label: "03 = Kantlimning, uppsättning tapet",
     treatments: [
       {
-        times: 0,
+        times: 1,
         treatment: "kantlimning",
-        materialConsumption: 0.197, // flugger
+        materialConsumption: 0.1,
         materialConsumptionUnit: "kvd",
-        material: "tapetlim",
+        material: "lim",
       },
+      {
+        times: 1,
+        treatment: "tapetuppsättning",
+        materialConsumption: 0.9,
+        materialConsumptionUnit: "rulle",
+        material: "tapet",
+      },
+    ],
+    dryingTime: 12,
+    tools: ["tapetbord", "tapetklister", "tapetborste", "pensel"],
+  },
+  {
+    label: "04 = Limning, uppsättning tapet",
+    treatments: [
       {
         times: 1,
         treatment: "tapetklister",
-        materialConsumption: 0.197, // flugger
+        materialConsumption: 0.2,
         materialConsumptionUnit: "kvd",
-        material: "tapetlim",
+        material: "tapetklister",
+      },
+      {
+        times: 1,
+        treatment: "tapetuppsättning",
+        materialConsumption: 0.8,
+        materialConsumptionUnit: "rulle",
+        material: "tapet",
       },
     ],
-    dryingTime: 4, // Default torktid i timmar
-    tools: ["tapetverktyg", "stege"], // Verktyg för tapetsering
+    dryingTime: 12,
+    tools: ["tapetbord", "tapetklister", "tapetborste"],
   },
   {
-    label: "07 = Spackling",
+    label: "05 = 1 gg grundning, uppsättning tapet",
     treatments: [
       {
         times: 1,
-        treatment: "spackel", // flugger
-        materialConsumption: 1,
+        treatment: "grundning",
+        materialConsumption: 0.2,
         materialConsumptionUnit: "kvd",
-        material: "spackel",
+        material: "grundfärg",
+      },
+      {
+        times: 1,
+        treatment: "tapetuppsättning",
+        materialConsumption: 0.8,
+        materialConsumptionUnit: "rulle",
+        material: "tapet",
       },
     ],
-    dryingTime: 3, // Default torktid för spackling
-    tools: ["spackelspadar"], // Verktyg för spackling
+    dryingTime: 18,
+    tools: ["roller", "pensel", "tapetklister"],
   },
   {
-    label: "08 = strykning",
+    label: "06 = 1 gg strykning, uppsättning tapet",
     treatments: [
       {
         times: 1,
-        treatment: "strykning", // flugger
-        materialConsumption: 0.125,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+      {
+        times: 1,
+        treatment: "tapetuppsättning",
+        materialConsumption: 0.7,
+        materialConsumptionUnit: "rulle",
+        material: "tapet",
+      },
+    ],
+    dryingTime: 14,
+    tools: ["roller", "pensel", "tapetklister"],
+  },
+  {
+    label: "07 = Grängning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "grängning",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "grängningsfärg",
+      },
+    ],
+    dryingTime: 6,
+    tools: ["roller", "pensel"],
+  },
+  {
+    label: "08 = 1 gg strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "strykning",
+        materialConsumption: 0.3,
         materialConsumptionUnit: "kvd",
         material: "färg",
       },
     ],
-    dryingTime: 3, // Default torktid för spackling
-    tools: ["spackelspadar"], // Verktyg för spackling
+    dryingTime: 6,
+    tools: ["roller", "pensel"],
   },
-  // Lägg till fler behandlingar här om det behövs
+  {
+    label: "09 = 1 gg påbättring, 1 gg strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "påbättring",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+      {
+        times: 1,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 12,
+    tools: ["roller", "pensel"],
+  },
+  {
+    label: "10 = 2 ggr strykning",
+    treatments: [
+      {
+        times: 2,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 14,
+    tools: ["roller", "pensel"],
+  },
+  {
+    label: "11 = 1gg påbättring, 2 ggr strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "påbättring",
+        materialConsumption: 0.15,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+      {
+        times: 2,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 16,
+    tools: ["roller", "pensel"],
+  },
+  {
+    label: "12 = 1 gg grundning, 2 ggr strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "grundning",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "grundfärg",
+      },
+      {
+        times: 2,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 18,
+    tools: ["roller", "pensel", "grundfärg"],
+  },
+  {
+    label: "13 = 3 ggr strykning",
+    treatments: [
+      {
+        times: 3,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 18,
+    tools: ["roller", "pensel"],
+  },
+  {
+    label:
+      "14 = 1 gg strykning, 1 gg ispackling (finspackling), 1 gg påbättring, 1 gg strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+      {
+        times: 1,
+        treatment: "ispackling",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "finspackel",
+      },
+      {
+        times: 1,
+        treatment: "påbättring",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+      {
+        times: 1,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 20,
+    tools: ["roller", "spackelspade", "pensel"],
+  },
+  {
+    label:
+      "15 = 1 gg strykning, 1 gg ispackling (finspackling), 2 ggr strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+      {
+        times: 1,
+        treatment: "ispackling",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "finspackel",
+      },
+      {
+        times: 2,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 22,
+    tools: ["roller", "spackelspade", "pensel"],
+  },
+  {
+    label:
+      "16 = 1 gg strykning, 1 gg bredspackling (finbredspackling), 2 ggr strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+      {
+        times: 1,
+        treatment: "bredspackling",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "finbredspackel",
+      },
+      {
+        times: 2,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 22,
+    tools: ["roller", "spackelspade", "pensel"],
+  },
+  {
+    label:
+      "17 = Vattenslipning, 1 gg strykning, 1 gg bredspackling (finbredspackling), 2 ggr strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "vattenslipning",
+        materialConsumption: 0.1,
+        materialConsumptionUnit: "kvd",
+        material: "vattenslip",
+      },
+      {
+        times: 1,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+      {
+        times: 1,
+        treatment: "bredspackling",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "finbredspackel",
+      },
+      {
+        times: 2,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 24,
+    tools: ["vattenslip", "roller", "spackelspade", "pensel"],
+  },
+  {
+    label: "18 = Vävklistring, 1 gg strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "vävklistring",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "vävklister",
+      },
+      {
+        times: 1,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 14,
+    tools: ["vävklister", "roller", "pensel"],
+  },
+  {
+    label: "19 = Vävklistring, 2 ggr strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "vävklistring",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "vävklister",
+      },
+      {
+        times: 2,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 16,
+    tools: ["vävklister", "roller", "pensel"],
+  },
+  {
+    label: "20 = Vävklistring, 1 gg grundning, 2 ggr strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "vävklistring",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "vävklister",
+      },
+      {
+        times: 1,
+        treatment: "grundning",
+        materialConsumption: 0.25,
+        materialConsumptionUnit: "kvd",
+        material: "grundfärg",
+      },
+      {
+        times: 2,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 18,
+    tools: ["vävklister", "roller", "pensel", "grundfärg"],
+  },
+  {
+    label: "21 = Vävklistring, 1 gg bredspackling, 2 ggr strykning",
+    treatments: [
+      {
+        times: 1,
+        treatment: "vävklistring",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "vävklister",
+      },
+      {
+        times: 1,
+        treatment: "bredspackling",
+        materialConsumption: 0.2,
+        materialConsumptionUnit: "kvd",
+        material: "finbredspackel",
+      },
+      {
+        times: 2,
+        treatment: "strykning",
+        materialConsumption: 0.3,
+        materialConsumptionUnit: "kvd",
+        material: "färg",
+      },
+    ],
+    dryingTime: 20,
+    tools: ["vävklister", "roller", "spackelspade", "pensel"],
+  },
 ];
 
-const materialUnits = {
-  tapetlim: "liter",
-  spackel: "liter",
-  grundfärg: "liter",
-  färg: "liter",
-  målartvätt: "liter",
-  gräng: "liter",
-};
-
 export default function TreatmentCalculator({ projectId, surfaceId }) {
-  console.log(`${projectId}-${surfaceId}`);
-  const [selectedLabel, setSelectedLabel] = useState("");
+  const [comments, setComments] = useState({});
   const [area, setArea] = useState(0);
   const [height, setHeight] = useState(2.5); // Standard takhöjd
   const [rollWidth, setRollWidth] = useState(0.53); // Default bredd på tapetrulle (m)
@@ -105,6 +1071,9 @@ export default function TreatmentCalculator({ projectId, surfaceId }) {
   const [treatmentHours, setTreatmentHours] = useState({});
   const [completedTreatments, setCompletedTreatments] = useState({});
   const [dryingTimes, setDryingTimes] = useState({});
+  const [selectedPre, setSelectedPre] = useState<string>("");
+  const [selectedUnder, setSelectedUnder] = useState<string>("");
+  const [selectedFinish, setSelectedFinish] = useState<string>("");
 
   // Ladda data från localStorage när komponenten laddas
   useEffect(() => {
@@ -165,8 +1134,28 @@ export default function TreatmentCalculator({ projectId, surfaceId }) {
     dryingTimes,
   ]);
 
-  const handleAddTreatment = () => {
-    const treatment = treatments.find((t) => t.label === selectedLabel);
+  const handleAddTreatment = (type: "pre" | "under" | "finish") => {
+    let treatment;
+    let source;
+
+    // Välj rätt array baserat på typ
+    switch (type) {
+      case "pre":
+        treatment = preTreatments.find((t) => t.label === selectedPre);
+        source = preTreatments;
+        break;
+      case "under":
+        treatment = underTreatments.find((t) => t.label === selectedUnder);
+        source = underTreatments;
+        break;
+      case "finish":
+        treatment = finishTreatments.find((t) => t.label === selectedFinish);
+        source = finishTreatments;
+        break;
+      default:
+        return;
+    }
+
     if (treatment) {
       const uniqueId = new Date().getTime();
       const newTreatment = { ...treatment, id: uniqueId };
@@ -237,6 +1226,13 @@ export default function TreatmentCalculator({ projectId, surfaceId }) {
     return tools;
   }, {});
 
+  const handleCommentChange = (treatmentId, comment) => {
+    setComments((prevComments) => ({
+      ...prevComments,
+      [treatmentId]: comment,
+    }));
+  };
+
   return (
     <div className="space-y-4">
       <Card>
@@ -285,24 +1281,76 @@ export default function TreatmentCalculator({ projectId, surfaceId }) {
               onChange={(e) => setPatternMatching(Number(e.target.value))}
             />
           </div>
+          <div className="grid gap-6">
+            {/* Förbehandling */}
+            <div className="grid gap-2">
+              <Label>Välj förbehandling</Label>
+              <Select onValueChange={setSelectedPre}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Välj förbehandling" />
+                </SelectTrigger>
+                <SelectContent>
+                  {preTreatments.map((t) => (
+                    <SelectItem key={t.label} value={t.label}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                className="inline-flex items-center"
+                onClick={() => handleAddTreatment("pre")}
+              >
+                Lägg till behandling
+              </Button>
+            </div>
 
-          <div>
-            <Label>Välj behandling</Label>
-            <Select onValueChange={setSelectedLabel}>
-              <SelectTrigger>
-                <SelectValue placeholder="Välj behandling" />
-              </SelectTrigger>
-              <SelectContent>
-                {treatments.map((t) => (
-                  <SelectItem key={t.label} value={t.label}>
-                    {t.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {/* Underbehandling */}
+            <div className="grid gap-2">
+              <Label>Välj underbehandling</Label>
+              <Select onValueChange={setSelectedUnder}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Välj underbehandling" />
+                </SelectTrigger>
+                <SelectContent>
+                  {underTreatments.map((t) => (
+                    <SelectItem key={t.label} value={t.label}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                className="inline-flex items-center"
+                onClick={() => handleAddTreatment("under")}
+              >
+                Lägg till behandling
+              </Button>
+            </div>
+
+            {/* Färdigbehandling */}
+            <div className="grid gap-2">
+              <Label>Välj färdigbehandling</Label>
+              <Select onValueChange={setSelectedFinish}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Välj färdigbehandling" />
+                </SelectTrigger>
+                <SelectContent>
+                  {finishTreatments.map((t) => (
+                    <SelectItem key={t.label} value={t.label}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                className="inline-flex items-center"
+                onClick={() => handleAddTreatment("finish")}
+              >
+                Lägg till behandling
+              </Button>
+            </div>
           </div>
-
-          <Button onClick={handleAddTreatment}>Lägg till behandling</Button>
         </CardContent>
       </Card>
 
@@ -357,13 +1405,24 @@ export default function TreatmentCalculator({ projectId, surfaceId }) {
                   <Label>Arbetstimmar</Label>
                   <Input
                     type="number"
-                    value={treatmentHours[t.id] || 0}
+                    value={treatmentHours[t.id]}
                     onChange={(e) =>
                       setTreatmentHours({
                         ...treatmentHours,
                         [t.id]: Number(e.target.value),
                       })
                     }
+                  />
+                </div>
+                {/* Kommentarfält */}
+                <div className="mt-4">
+                  <Label>Kommentar</Label>
+                  <textarea
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    rows="3"
+                    value={comments[t.id] || ""}
+                    onChange={(e) => handleCommentChange(t.id, e.target.value)}
+                    placeholder="Skriv en kommentar..."
                   />
                 </div>
               </li>

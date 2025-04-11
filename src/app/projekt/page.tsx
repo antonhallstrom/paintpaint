@@ -324,7 +324,7 @@ export default function ProjectForm() {
                   </div>
 
                   {/* Ytor */}
-                  <div className="m-4 space-y-2">
+                  <div className="my-4 space-y-2">
                     <h5>Ytor</h5>
                     {project.surfaces.map((surface, surfaceIndex) => (
                       <Accordion
@@ -360,54 +360,155 @@ export default function ProjectForm() {
                                   setProjects(updated);
                                 }}
                               />
-                              <div className="flex">
-                                <Select
-                                  value={surface.base}
-                                  onValueChange={(value) => {
-                                    const updated = [...projects];
-                                    updated[projectIndex].surfaces[
-                                      surfaceIndex
-                                    ].base = value;
-                                    setProjects(updated);
-                                  }}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Underlag" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="trä">Trä</SelectItem>
-                                    <SelectItem value="betong">
-                                      Betong
-                                    </SelectItem>
-                                  </SelectContent>
-                                </Select>
-                                <Select
-                                  value={surface.finish}
-                                  onValueChange={(value) => {
-                                    const updated = [...projects];
-                                    updated[projectIndex].surfaces[
-                                      surfaceIndex
-                                    ].finish = value;
-                                    setProjects(updated);
-                                  }}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Slut yta" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="målad">Målad</SelectItem>
-                                    <SelectItem value="slipad">
-                                      Slipad
-                                    </SelectItem>
-                                    <SelectItem value="tapetserad">
-                                      Tapetserad
-                                    </SelectItem>
-                                    <SelectItem value="lackad">
-                                      Lackad
-                                    </SelectItem>
-                                  </SelectContent>
-                                </Select>
+                              <div className="flex flex-col space-y-4">
+                                {/* Underlag */}
+                                <div>
+                                  <label htmlFor="base">Underlag</label>
+                                  <Select
+                                    id="base"
+                                    value={surface.base}
+                                    onValueChange={(value) => {
+                                      const updated = [...projects];
+                                      updated[projectIndex].surfaces[
+                                        surfaceIndex
+                                      ].base = value;
+                                      setProjects(updated);
+                                    }}
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Underlag" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="1">
+                                        1 - Ny obehandlad puts, stålglättad
+                                        betongyta, gips/stuckatur
+                                      </SelectItem>
+                                      <SelectItem value="2">
+                                        2 - Ny obehandlad betong mot skivform,
+                                        betongelement, betong- och
+                                        lättbetongelement, tunnfogsblock
+                                      </SelectItem>
+                                      <SelectItem value="3">
+                                        3 - Ny obehandlad betong mot brädform
+                                        eller luckform
+                                      </SelectItem>
+                                      <SelectItem value="4">
+                                        4 - Ny obehandlat murverk (utom
+                                        tumfogsblock)
+                                      </SelectItem>
+                                      <SelectItem value="5">
+                                        5 - Nya obehandlade skivor/gipsskivor
+                                      </SelectItem>
+                                      <SelectItem value="6">
+                                        6 - Nya obehandlade träytor
+                                      </SelectItem>
+                                      <SelectItem value="7">
+                                        7 - Ny obehandlad metallyta
+                                      </SelectItem>
+                                      <SelectItem value="8">
+                                        8 - Ny obehandlade radiatorer & rör
+                                      </SelectItem>
+                                      <SelectItem value="9">9 - Fri</SelectItem>
+                                      <SelectItem value="91">
+                                        91 - Befintlig tapetserad yta
+                                      </SelectItem>
+                                      <SelectItem value="92">
+                                        92 - Befintlig yta behandlad med
+                                        kalkfärg, cementfärg, silikatfärg,
+                                        slamfärg
+                                      </SelectItem>
+                                      <SelectItem value="93">
+                                        93 - Befintlig yta behandlad med
+                                        sandspackel / gräng
+                                      </SelectItem>
+                                      <SelectItem value="94">
+                                        94 - Befintlig yta behandlad med limfärg
+                                        / emulsionsfärg
+                                      </SelectItem>
+                                      <SelectItem value="95">
+                                        95 - Befintlig yta behandlad med
+                                        lackfärg
+                                      </SelectItem>
+                                      <SelectItem value="96">
+                                        96 - Befintlig yta behandlad med
+                                        latexfärg / latexlackfärg
+                                      </SelectItem>
+                                      <SelectItem value="97">
+                                        97 - Befintlig yta behandlad med
+                                        klarlack, olja, bets, lasyrfärg
+                                      </SelectItem>
+                                      <SelectItem value="98">
+                                        98 - Fri
+                                      </SelectItem>
+                                      <SelectItem value="99">
+                                        99 - Fri
+                                      </SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <div className="mt-2 text-sm text-gray-600">
+                                    <strong>Valt Underlag:</strong>{" "}
+                                    {surface.base}
+                                  </div>
+                                </div>
+
+                                {/* Slutbehandling */}
+                                <div>
+                                  <label htmlFor="finish">Slutbehandling</label>
+                                  <Select
+                                    id="finish"
+                                    value={surface.finish}
+                                    onValueChange={(value) => {
+                                      const updated = [...projects];
+                                      updated[projectIndex].surfaces[
+                                        surfaceIndex
+                                      ].finish = value;
+                                      setProjects(updated);
+                                    }}
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Slut yta" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="1">
+                                        1 - Slutytan ska vara tapetserad
+                                      </SelectItem>
+                                      <SelectItem value="2">
+                                        2 - Slutytan ska behandlas med kalkfärg,
+                                        cementfärg, silikatfärg, slamfärg
+                                      </SelectItem>
+                                      <SelectItem value="3">
+                                        3 - Slutytan ska behandlas med
+                                        sandspackelmassa eller grängning
+                                      </SelectItem>
+                                      <SelectItem value="4">
+                                        4 - Slutytan ska behandlas med limfärg /
+                                        emulsionsfärg
+                                      </SelectItem>
+                                      <SelectItem value="5">
+                                        5 - Slutytan ska behandlas med lackfärg
+                                      </SelectItem>
+                                      <SelectItem value="6">
+                                        6 - Slutytan ska behandlas med latexfärg
+                                        / latexlackfärg (målas med färg)
+                                      </SelectItem>
+                                      <SelectItem value="7">
+                                        7 - Slutytan ska behandlas med klarlack,
+                                        olja
+                                      </SelectItem>
+                                      <SelectItem value="8">
+                                        8 - Slutytan ska behandlas med
+                                        specialfärg
+                                      </SelectItem>
+                                      <SelectItem value="9">9 - Fri</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <div className="mt-2 text-sm text-gray-600">
+                                    <strong>Vald Slutbehandling:</strong>{" "}
+                                    {surface.finish}
+                                  </div>
+                                </div>
                               </div>
+
                               <h5>Behandlingar</h5>
                               <TreatmentCalculator
                                 projectId={project.id}
