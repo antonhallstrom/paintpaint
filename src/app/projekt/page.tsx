@@ -206,6 +206,29 @@ export default function ProjectForm() {
     return project.status === filterStatus; // Filtrera baserat på status
   });
 
+  const removeProject = (projectId) => {
+    // Ta bort projektet från localStorage
+    const updatedProjects = projects.filter(
+      (project) => project.id !== projectId
+    );
+    setProjects(updatedProjects);
+
+    // Ta bort ytor kopplade till projektet från surfaces
+    const storedSurfaces = JSON.parse(localStorage.getItem("surfaces") || "{}");
+    const updatedSurfaces = Object.keys(storedSurfaces).reduce(
+      (acc, surfaceKey) => {
+        const surface = storedSurfaces[surfaceKey];
+        if (surface.projectId !== projectId) {
+          acc[surfaceKey] = surface;
+        }
+        return acc;
+      },
+      {}
+    );
+
+    localStorage.setItem("surfaces", JSON.stringify(updatedSurfaces));
+  };
+
   return (
     <div className="p-4 space-y-4">
       <Link href="/" className="w-full">
@@ -238,6 +261,13 @@ export default function ProjectForm() {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="grid grid-cols-2 gap-4">
+                    {/* Ta bort projektknapp */}
+                    <button
+                      onClick={() => removeProject(project.id)}
+                      className="text-red-500 hover:text-red-700 mt-4"
+                    >
+                      Ta bort projekt
+                    </button>
                     <Input
                       placeholder="Projekt titel"
                       value={project.title}
