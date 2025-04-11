@@ -73,20 +73,7 @@ const MaterialList = ({ surfaces }) => {
 export default function ProjectForm() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [surfaces, setSurfaces] = useState();
-  const [projects, setProjects] = useState([
-    {
-      title: "",
-      status: "",
-      startDate: "",
-      endDate: "",
-      address: "",
-      notes: "",
-      contact: "",
-      phone: "",
-      surfaces: [],
-      id: crypto.randomUUID(),
-    },
-  ]);
+  const [projects, setProjects] = useState(null); // null = inte laddat än
 
   useEffect(() => {
     const stored = localStorage.getItem("surfaces");
@@ -113,12 +100,17 @@ export default function ProjectForm() {
         setProjects(JSON.parse(stored));
       } catch (err) {
         console.error("Kunde inte parsa localStorage-data:", err);
+        setProjects([]); // fallback till tom array
       }
+    } else {
+      setProjects([]); // Inget i localStorage? Då är det tomt
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("projects", JSON.stringify(projects));
+    if (projects !== null) {
+      localStorage.setItem("projects", JSON.stringify(projects));
+    }
   }, [projects]);
 
   const addSurface = (projectIndex) => {
@@ -206,6 +198,8 @@ export default function ProjectForm() {
       materials: Array.from(materials),
     };
   };
+
+  if (projects === null) return <p>Laddar...</p>;
 
   const filteredProjects = projects.filter((project) => {
     if (filterStatus === "all") return true; // Visa alla projekt
