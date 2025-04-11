@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Home } from "lucide-react";
 import Link from "next/link";
+import React from "react";
 const STORAGE_KEYS = ["projects", "surfaces"] as const;
 type StorageKey = (typeof STORAGE_KEYS)[number];
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -225,6 +226,8 @@ export default function ProjectForm() {
       },
       {}
     );
+
+    // kanske behalla allt for rensa kommer vra lite svart.
 
     localStorage.setItem("surfaces", JSON.stringify(updatedSurfaces));
   };
