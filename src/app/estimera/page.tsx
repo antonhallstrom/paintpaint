@@ -806,7 +806,7 @@ const underTreatments = [
   },
 ];
 
-export const finishTreatments = [
+const finishTreatments = [
   {
     code: "00",
     label: "Ingen färdigbehandling.",
