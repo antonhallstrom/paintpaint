@@ -55,7 +55,7 @@ export default function TimesheetApp() {
       comment: string;
     }[] // Lägg till ackordtimmar i loggen
   >([]);
-  const [range, setRange] = useState<any>([
+  const [range, setRange] = useState<unknown>([
     {
       startDate: addDays(new Date(), -7),
       endDate: new Date(),

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -1902,7 +1903,7 @@ export default function TreatmentCalculator({ projectId, surfaceId }) {
                   <Label>Kommentar</Label>
                   <textarea
                     className="w-full p-2 border border-gray-300 rounded-md"
-                    rows="3"
+                    rows={3}
                     value={comments[t.id] || ""}
                     onChange={(e) => handleCommentChange(t.id, e.target.value)}
                     placeholder="Skriv en kommentar..."
@@ -1920,7 +1921,7 @@ export default function TreatmentCalculator({ projectId, surfaceId }) {
           <ul className="list-disc pl-4">
             {Object.entries(toolsSummary).map(([tool, count], i) => (
               <li key={i}>
-                {tool}: {count} st
+                {tool}: {count as any} st
               </li>
             ))}
           </ul>
@@ -1933,7 +1934,7 @@ export default function TreatmentCalculator({ projectId, surfaceId }) {
           <ul className="list-disc pl-4">
             {Object.entries(materialSummary).map(([material, total], i) => (
               <li key={i}>
-                {material}: {total.toFixed(2)}
+                {material}: {(total as any).toFixed(2)}
                 {" l"}
               </li>
             ))}

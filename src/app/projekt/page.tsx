@@ -153,8 +153,8 @@ export default function ProjectForm() {
     }
 
     let totalTime = 0;
-    let tools = new Set();
-    let materials = new Set();
+    const tools = new Set();
+    const materials = new Set();
 
     // Iterera genom alla ytor i surfaces (som är objekt med unika nycklar)
     Object.keys(surfaces).forEach((surfaceKey) => {
@@ -163,7 +163,7 @@ export default function ProjectForm() {
       // Säkerställ att selectedTreatments finns och är en array innan vi fortsätter
       if (Array.isArray(surface.selectedTreatments)) {
         if (surface.treatmentHours && surface.treatmentHours) {
-          totalTime += Object.values(surface.treatmentHours).reduce(
+          totalTime += Object.values(surface.treatmentHours as unknown).reduce(
             (acc, curr) => acc + curr,
             0
           );
@@ -566,11 +566,12 @@ export default function ProjectForm() {
                           <div>
                             <strong>Verktyg:</strong>
                             <ul className="list-disc pl-4">
-                              {getTotalTimeAndMaterials(surfaces).tools.map(
-                                (tool, index) => (
-                                  <li key={index}>{tool}</li>
-                                )
-                              )}
+                              {getTotalTimeAndMaterials(
+                                surfaces as unknown
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                              ).tools.map((tool: any, index) => (
+                                <li key={index}>{tool}</li>
+                              ))}
                             </ul>
                           </div>
                           <p>
@@ -580,6 +581,7 @@ export default function ProjectForm() {
                           <p>
                             <strong>Total arbetstid:</strong>
                             {
+                              // eslint-disable-next-line @typescript-eslint/no-explicit-any
                               getTotalTimeAndMaterials(surfaces as any)
                                 .totalTime
                             }{" "}
