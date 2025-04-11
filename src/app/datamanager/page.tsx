@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
@@ -61,7 +62,7 @@ export default function Page() {
       <div className="flex gap-2 items-end">
         <div className="flex-1">
           <label className="block font-medium mb-1">Välj nyckel</label>
-          <Select onValueChange={setSelectedKey}>
+          <Select onValueChange={setSelectedKey as unknown as any}>
             <SelectTrigger>
               <SelectValue placeholder="Välj nyckel" />
             </SelectTrigger>
