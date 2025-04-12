@@ -263,16 +263,10 @@ export default function ProjectForm() {
               <AccordionItem value={`project-${projectIndex}`}>
                 <AccordionTrigger>
                   {project.title || `Project ${projectIndex}`}
+                  {" " + `(${project.status})`}
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="grid grid-cols-2 gap-4">
-                    {/* Ta bort projektknapp */}
-                    <button
-                      onClick={() => removeProject(project.id)}
-                      className="text-red-500 hover:text-red-700 mt-4"
-                    >
-                      Ta bort projekt
-                    </button>
                     <Input
                       placeholder="Projekt titel"
                       value={project.title}
@@ -590,6 +584,13 @@ export default function ProjectForm() {
                         </div>
                       )}
                     </div>
+                    {/* Ta bort projektknapp */}
+                    {/* <button
+                      onClick={() => removeProject(project.id)}
+                      className="text-red-500 hover:text-red-700 mt-4"
+                    >
+                      Ta bort projekt
+                    </button> */}
                   </div>
                 </AccordionContent>
               </AccordionItem>

@@ -15,7 +15,7 @@ import {
 import { Home } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-const STORAGE_KEYS = ["projects", "surfaces"] as const;
+const STORAGE_KEYS = ["projects", "surfaces", "workLog"] as const;
 type StorageKey = (typeof STORAGE_KEYS)[number];
 
 export default function Page() {

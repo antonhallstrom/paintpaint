@@ -173,6 +173,11 @@ export default function TimesheetApp() {
     }
   }, []);
 
+  // 💾 Spara log automatiskt när den ändras
+  useEffect(() => {
+    localStorage.setItem("workLog", JSON.stringify(log));
+  }, [log]);
+
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Arbetskort</h1>
